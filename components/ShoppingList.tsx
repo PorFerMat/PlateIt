@@ -1,6 +1,7 @@
+
 import React, { useMemo } from 'react';
 import { Ingredient } from '../types';
-import { Check, Trash2, ShoppingBasket, Share2 } from 'lucide-react';
+import { Check, Trash2, ShoppingBasket, X } from 'lucide-react';
 
 interface ShoppingListProps {
   ingredients: Ingredient[];
@@ -80,7 +81,8 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
       </div>
 
       <div className="space-y-8">
-        {Object.entries(groupedIngredients).map(([category, items]) => {
+        {/* Fix: Explicitly cast Object.entries result to resolve 'unknown' type inference on items */}
+        {(Object.entries(groupedIngredients) as [string, { item: Ingredient; originalIndex: number }[]][]).map(([category, items]) => {
           if (items.length === 0) return null;
           
           return (
@@ -120,7 +122,7 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
                       }}
                       className="opacity-0 group-hover:opacity-100 p-2 text-slate-300 hover:text-red-500 transition-all"
                     >
-                      <XIcon className="w-4 h-4" />
+                      <X className="w-4 h-4" />
                     </button>
                   </div>
                 ))}
@@ -132,19 +134,3 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
     </div>
   );
 };
-
-// Helper Icon for this component
-const XIcon = ({ className }: { className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <path d="M18 6 6 18"/><path d="m6 6 18 18"/>
-  </svg>
-);

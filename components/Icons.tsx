@@ -14,7 +14,9 @@ import {
   BookOpen,
   Crown,
   Star,
-  CheckCircle2
+  CheckCircle2,
+  CreditCard,
+  Wallet
 } from 'lucide-react';
 
 export { 
@@ -32,5 +34,7 @@ export {
   BookOpen,
   Crown,
   Star,
-  CheckCircle2
+  CheckCircle2,
+  CreditCard,
+  Wallet
 };

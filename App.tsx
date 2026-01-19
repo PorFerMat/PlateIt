@@ -4,7 +4,8 @@ import {
   Plus, 
   ShoppingBasket, 
   BookOpen,
-  Crown
+  Crown,
+  Sparkles
 } from 'lucide-react';
 import { Recipe, ViewState, Ingredient } from './types';
 import { RecipeCard } from './components/RecipeCard';
@@ -12,33 +13,6 @@ import { AddRecipeModal } from './components/AddRecipeModal';
 import { RecipeDetail } from './components/RecipeDetail';
 import { ShoppingList } from './components/ShoppingList';
 import { SubscriptionModal } from './components/SubscriptionModal';
-
-// Initial Mock Data to populate the app if empty
-const DEMO_RECIPES: Recipe[] = [
-  {
-    id: 'demo-1',
-    title: 'Spicy Basil Chicken (Pad Krapow)',
-    description: 'A classic Thai street food dish. Fast, spicy, and incredibly savory.',
-    prepTime: '15 min',
-    servings: '2',
-    imageUrl: 'https://picsum.photos/id/49/800/600',
-    tags: ['Thai', 'Spicy', 'Quick'],
-    createdAt: Date.now(),
-    ingredients: [
-      { item: 'Chicken Breast', amount: '300g', category: 'Meat' },
-      { item: 'Thai Basil', amount: '1 cup', category: 'Produce' },
-      { item: 'Bird Eye Chilies', amount: '4', category: 'Produce' },
-      { item: 'Soy Sauce', amount: '2 tbsp', category: 'Pantry' },
-      { item: 'Jasmine Rice', amount: '1 cup', category: 'Pantry' }
-    ],
-    instructions: [
-      { step: 1, text: 'Chop the chicken into small bite-sized pieces.' },
-      { step: 2, text: 'Crush garlic and chilies in a mortar.' },
-      { step: 3, text: 'Stir fry the garlic paste in oil until fragrant.' },
-      { step: 4, text: 'Add chicken and sauces, cook until done. Toss in basil at the end.' }
-    ]
-  }
-];
 
 const RECIPE_LIMIT = 3;
 
@@ -60,19 +34,35 @@ const App: React.FC = () => {
     const savedProStatus = localStorage.getItem('plateit_is_pro');
 
     if (savedRecipes) {
-      setRecipes(JSON.parse(savedRecipes));
-    } else {
-      setRecipes(DEMO_RECIPES);
+      try {
+        setRecipes(JSON.parse(savedRecipes));
+      } catch (e) {
+        console.error("Failed to parse saved recipes", e);
+      }
     }
 
-    if (savedList) setShoppingList(JSON.parse(savedList));
-    if (savedListIds) setShoppingListRecipeIds(JSON.parse(savedListIds));
+    if (savedList) {
+      try {
+        setShoppingList(JSON.parse(savedList));
+      } catch (e) {
+        console.error("Failed to parse shopping list", e);
+      }
+    }
+
+    if (savedListIds) {
+      try {
+        setShoppingListRecipeIds(JSON.parse(savedListIds));
+      } catch (e) {
+        console.error("Failed to parse list IDs", e);
+      }
+    }
+
     if (savedProStatus === 'true') setIsPro(true);
   }, []);
 
   // Save state updates
   useEffect(() => {
-    if (recipes.length > 0) localStorage.setItem('plateit_recipes', JSON.stringify(recipes));
+    localStorage.setItem('plateit_recipes', JSON.stringify(recipes));
   }, [recipes]);
 
   useEffect(() => {
@@ -153,24 +143,35 @@ const App: React.FC = () => {
 
     return (
       <div className="space-y-8 animate-in fade-in duration-500">
-        <div className="flex justify-between items-end">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-slate-900 mb-2">What's Cooking?</h1>
             <p className="text-slate-500">
               {isPro ? 'Turn your inspiration into dinner.' : `${recipes.length} / ${RECIPE_LIMIT} free recipes used.`}
             </p>
           </div>
-          <button 
-            onClick={handleAddButtonClick}
-            className={`hidden md:flex items-center gap-2 px-5 py-3 rounded-xl transition-all ${
-              !isPro && recipes.length >= RECIPE_LIMIT
-                ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-lg shadow-orange-200'
-                : 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-lg'
-            }`}
-          >
-            {!isPro && recipes.length >= RECIPE_LIMIT ? <Crown className="w-5 h-5" /> : <Plus className="w-5 h-5" />} 
-            {(!isPro && recipes.length >= RECIPE_LIMIT) ? 'Unlock Unlimited' : 'Add Recipe'}
-          </button>
+          <div className="flex items-center gap-3">
+            {!isPro && (
+              <button 
+                onClick={() => setIsSubscriptionModalOpen(true)}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 transition-all font-bold"
+              >
+                <Crown className="w-5 h-5" />
+                Upgrade to Pro
+              </button>
+            )}
+            <button 
+              onClick={handleAddButtonClick}
+              className={`flex items-center gap-2 px-5 py-3 rounded-xl transition-all font-bold ${
+                !isPro && recipes.length >= RECIPE_LIMIT
+                  ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-lg shadow-orange-200'
+                  : 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-lg'
+              }`}
+            >
+              {!isPro && recipes.length >= RECIPE_LIMIT ? <Crown className="w-5 h-5" /> : <Plus className="w-5 h-5" />} 
+              {(!isPro && recipes.length >= RECIPE_LIMIT) ? 'Unlock Unlimited' : 'Add Recipe'}
+            </button>
+          </div>
         </div>
 
         {recipes.length === 0 ? (
@@ -180,12 +181,23 @@ const App: React.FC = () => {
              </div>
              <h3 className="text-lg font-medium text-slate-600 mb-2">No recipes yet</h3>
              <p className="text-slate-400 mb-6">Add a recipe from a URL to get started.</p>
-             <button 
-              onClick={handleAddButtonClick}
-              className="text-emerald-600 font-medium hover:underline"
-             >
-               Add your first recipe
-             </button>
+             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+               <button 
+                onClick={handleAddButtonClick}
+                className="bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-all"
+               >
+                 Add your first recipe
+               </button>
+               {!isPro && (
+                 <button 
+                  onClick={() => setIsSubscriptionModalOpen(true)}
+                  className="flex items-center gap-2 text-amber-600 font-bold hover:underline px-4 py-2"
+                 >
+                   <Crown className="w-4 h-4" />
+                   Go Pro for Unlimited Storage
+                 </button>
+               )}
+             </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -206,13 +218,19 @@ const App: React.FC = () => {
             {!isPro && recipes.length > 0 && (
                <div 
                  onClick={() => setIsSubscriptionModalOpen(true)}
-                 className="group bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/30 transition-all duration-300 flex flex-col items-center justify-center min-h-[300px] cursor-pointer"
+                 className="group bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-dashed border-amber-200 hover:border-amber-400 transition-all duration-300 flex flex-col items-center justify-center min-h-[300px] cursor-pointer p-6 text-center"
                >
-                 <div className="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                   <Crown className="w-6 h-6 text-amber-500" />
+                 <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform text-amber-500">
+                   <Crown className="w-8 h-8" />
                  </div>
-                 <h3 className="font-bold text-slate-700">Unlock Unlimited</h3>
-                 <p className="text-slate-400 text-sm mt-1">Add more recipes</p>
+                 <h3 className="font-bold text-slate-800 text-lg">Go Unlimited</h3>
+                 <p className="text-slate-500 text-sm mt-2 mb-6">
+                   You've reached your free limit of {RECIPE_LIMIT} recipes. 
+                   Unlock the full power of PlateIt Pro today.
+                 </p>
+                 <span className="px-6 py-2 bg-amber-500 text-white rounded-full font-bold shadow-md shadow-amber-200 group-hover:bg-amber-600 transition-colors">
+                   Unlock Now
+                 </span>
                </div>
             )}
           </div>
@@ -241,7 +259,7 @@ const App: React.FC = () => {
               )}
             </div>
 
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
               <button 
                 onClick={() => setActiveView('DASHBOARD')}
                 className={`flex items-center gap-2 text-sm font-medium transition-colors ${
@@ -270,10 +288,10 @@ const App: React.FC = () => {
               {!isPro && (
                 <button 
                   onClick={() => setIsSubscriptionModalOpen(true)}
-                  className="hidden sm:flex items-center gap-1.5 bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-xs font-bold hover:bg-amber-200 transition-colors"
+                  className="flex items-center gap-1.5 bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-xs font-bold hover:bg-amber-200 transition-colors"
                 >
                   <Crown className="w-3 h-3" />
-                  Go Pro
+                  <span className="hidden xs:inline">Go Pro</span>
                 </button>
               )}
             </div>
@@ -287,12 +305,20 @@ const App: React.FC = () => {
       </main>
 
       {/* Mobile Floating Action Button */}
-      <div className="fixed bottom-6 right-6 md:hidden z-30">
+      <div className="fixed bottom-6 right-6 md:hidden z-30 flex flex-col gap-3">
+        {!isPro && (
+          <button 
+            onClick={() => setIsSubscriptionModalOpen(true)}
+            className="bg-amber-500 text-white p-4 rounded-full shadow-lg shadow-amber-400/50 active:scale-95 transition-transform"
+          >
+            <Crown className="w-6 h-6" />
+          </button>
+        )}
         <button 
           onClick={handleAddButtonClick}
-          className={`${!isPro && recipes.length >= RECIPE_LIMIT ? 'bg-amber-500' : 'bg-slate-900'} text-white p-4 rounded-full shadow-lg shadow-slate-400/50 active:scale-95 transition-transform`}
+          className={`${!isPro && recipes.length >= RECIPE_LIMIT ? 'bg-amber-600' : 'bg-slate-900'} text-white p-4 rounded-full shadow-lg shadow-slate-400/50 active:scale-95 transition-transform`}
         >
-          {(!isPro && recipes.length >= RECIPE_LIMIT) ? <Crown className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
+          <Plus className="w-6 h-6" />
         </button>
       </div>
 

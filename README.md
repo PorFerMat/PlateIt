@@ -1,83 +1,55 @@
-# PlateIt - From Inspiration to Dinner Table
+# PlateIt - Requirement Specification & User Manual
 
-PlateIt is a culinary assistant app designed to bridge the gap between finding a recipe and actually cooking it. It uses AI to parse recipes from unstructured text or URLs, organizes ingredients into a categorized shopping list, and provides a clear, focused cooking mode.
+## 📋 App Requirements Specification
 
-## App Requirements & Specifications
+### 1. Platform Requirements
+*   **Target Environments**: iOS (TestFlight) & Android (Google Play).
+*   **Architecture**: Built as a responsive React PWA. To reach native stores, this codebase is designed to be bundled with **Capacitor**.
+*   **Offline Support**: Local storage caching enabled for recipes and shopping lists.
 
-### 1. Platform & Compatibility
-*   **Web-First Architecture:** Built using React 19, TypeScript, and TailwindCSS for maximum responsiveness.
-*   **Mobile-Ready:** Fully responsive PWA-ready design. Works on iOS Safari and Android Chrome.
-*   **Note on Native Deployment:** This project provides the web source code. To deploy to TestFlight (iOS) or Google Play Console, this codebase must be wrapped using **Capacitor** or **Ionic**.
-
-### 2. Monetization
-*   **Freemium Model:** The app implements a strict freemium model.
-*   **Free Tier:**
-    *   Limit of 3 saved recipes.
-    *   Basic AI parsing.
-*   **Pro Tier (PlateIt Pro):**
-    *   Unlimited recipe storage.
-    *   Advanced Parsing priority.
-    *   $4.99/month price point.
-*   **Implementation:** The current codebase simulates the UI and state management for a subscription system (mocking RevenueCat behavior).
+### 2. Monetization (RevenueCat)
+*   **SDK Integration**: The app features a `SubscriptionModal` that mocks the RevenueCat transaction flow.
+*   **Subscription Tier**: "PlateIt Pro" ($4.99/mo).
+*   **Gating Logic**: Free users are limited to **3 recipes**. Attempting to add a 4th triggers the Pro unlock flow.
+*   **Pro Features**: Unlimited recipe storage, priority AI processing, and ad-free experience.
 
 ### 3. Core Functionality
-*   **AI Recipe Extraction:** Uses Google Gemini API to parse ingredients and instructions from raw text or URLs.
-*   **Smart Shopping List:** Automatically categorizes ingredients (Produce, Dairy, Meat, Pantry) for efficient shopping.
-*   **Cooking Mode:** Distraction-free view of ingredients and step-by-step instructions.
-
-### 4. Audience Fit
-*   **Target User:** Home cooks who save recipes on Instagram/TikTok/Blogs but never make them because the data is unorganized.
-*   **Solution:** Removes friction by converting "content" into "actionable lists".
+*   **AI Extraction**: Powered by Gemini-3-Flash. Supports parsing raw text (copy-pasted) or URLs (web scraping via Google Search tool).
+*   **Dynamic Categorization**: AI categorizes ingredients into grocery store aisles automatically.
+*   **Checked Persistence**: Shopping list items stay checked even after app restarts.
 
 ---
 
-# User Manual
+## 📖 User Manual
 
-## Getting Started
+### Welcome to PlateIt
+PlateIt is designed for the modern home cook who finds inspiration on social media but forgets to actually make the food. We turn "inspiration" into "action."
 
-### 1. Adding a Recipe
-1.  Click the **Add Recipe** button (or the + icon on mobile).
-2.  **Via URL:** Paste a link to a recipe blog, YouTube video, or social media post.
-3.  **Via Text:** Paste the raw text of a recipe.
-4.  Click **Magic Extract**. PlateIt uses AI to format the recipe into a clean card.
+### Step 1: Adding Your First Recipe
+1.  **Open the Add Modal**: Tap the `+` button on your dashboard.
+2.  **Paste Source**: You can paste a direct URL (e.g., a food blog or YouTube link) or simply paste the raw text of a recipe you have in your notes.
+3.  **Magic Extract**: Tap "Magic Extract". Our AI will read the content, find the ingredients, and organize them.
 
-### 2. Managing Your Shopping List
-1.  On the Dashboard, find a recipe you want to cook.
-2.  Click **Add to Shopping List**.
-3.  Navigate to the **Shopping List** tab.
-4.  Ingredients are sorted by aisle (Produce, Meat, etc.).
-5.  Tap items to check them off as you shop.
+### Step 2: Shopping Made Easy
+1.  On any recipe card, tap **Add to Shopping List**.
+2.  Go to the **Shopping List** tab in the navigation bar.
+3.  Your items are automatically grouped by aisle (Produce, Meat, Dairy, etc.).
+4.  As you shop, tap an item to check it off.
 
-### 3. Cooking
-1.  Click on any recipe card to open **Recipe Detail**.
-2.  View prep time, servings, and a clear list of ingredients.
-3.  Follow the numbered instructions to cook your meal.
+### Step 3: Cooking Mode
+1.  Tap on any recipe on your dashboard to see the **Full Detail**.
+2.  View the ingredients and the step-by-step instructions.
+3.  Instructions are clearly numbered and easy to read while your hands are busy in the kitchen.
 
-## PlateIt Pro Subscription
-
-**Why Upgrade?**
-The free version allows you to store up to **3 recipes** at a time to try out the service. To build a personal cookbook of unlimited favorites, upgrade to PlateIt Pro.
-
-**How to Upgrade:**
-1.  Attempt to add a 4th recipe.
-2.  The subscription window will appear.
-3.  Click "Unlock for $4.99/mo". (Note: In this demo version, this transaction is simulated).
-
-## Troubleshooting
-
-*   **"Could not extract recipe":** The AI might struggle with very short or unclear text. Try pasting the full ingredient list and instructions manually.
-*   **Shopping List Sync:** Data is saved to your browser's local storage. Clearing cache will remove your recipes.
+### Managing Your Pro Subscription
+*   If you love the app and want to save more than 3 recipes, you can upgrade to **PlateIt Pro**.
+*   Tap the **Crown** icon or wait for the prompt when you hit your free limit.
+*   Once upgraded, you'll see the "Pro" badge in the navigation header, indicating unlimited access.
 
 ---
 
-## Developer Setup
-
-### Prerequisites
-*   Node.js & npm
-*   Google Gemini API Key
-
-### Installation
-1.  Clone the repository.
-2.  Install dependencies: `npm install`
-3.  Set your environment variable: `export API_KEY="your_gemini_key"`
-4.  Run local server: `npm start`
+## 🛠 Developer Setup
+*   **API Configuration**: Ensure `process.env.API_KEY` is set with a valid Google Gemini API Key.
+*   **Framework**: React 19 + TypeScript.
+*   **Styling**: Tailwind CSS for responsive utility-first design.
+*   **Build**: `npm run build` for production-ready assets.
