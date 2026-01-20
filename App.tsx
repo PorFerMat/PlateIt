@@ -13,6 +13,7 @@ import { AddRecipeModal } from './components/AddRecipeModal';
 import { RecipeDetail } from './components/RecipeDetail';
 import { ShoppingList } from './components/ShoppingList';
 import { SubscriptionModal } from './components/SubscriptionModal';
+import { Purchases } from './services/revenueCat';
 
 const RECIPE_LIMIT = 3;
 
@@ -26,12 +27,28 @@ const App: React.FC = () => {
   const [shoppingListRecipeIds, setShoppingListRecipeIds] = useState<string[]>([]);
   const [isPro, setIsPro] = useState(false);
 
+  // Initialize RevenueCat and Entitlements
+  useEffect(() => {
+    const initMonetization = async () => {
+      try {
+        await Purchases.initialize();
+        const info = await Purchases.getCustomerInfo();
+        // Check if the 'pro_access' entitlement is active
+        const hasAccess = Object.keys(info.entitlements.active).includes('pro_access');
+        setIsPro(hasAccess);
+      } catch (e) {
+        console.error("Failed to initialize monetization", e);
+      }
+    };
+
+    initMonetization();
+  }, []);
+
   // Load state from local storage on mount
   useEffect(() => {
     const savedRecipes = localStorage.getItem('plateit_recipes');
     const savedList = localStorage.getItem('plateit_list');
     const savedListIds = localStorage.getItem('plateit_list_ids');
-    const savedProStatus = localStorage.getItem('plateit_is_pro');
 
     if (savedRecipes) {
       try {
@@ -56,8 +73,6 @@ const App: React.FC = () => {
         console.error("Failed to parse list IDs", e);
       }
     }
-
-    if (savedProStatus === 'true') setIsPro(true);
   }, []);
 
   // Save state updates
@@ -69,10 +84,6 @@ const App: React.FC = () => {
     localStorage.setItem('plateit_list', JSON.stringify(shoppingList));
     localStorage.setItem('plateit_list_ids', JSON.stringify(shoppingListRecipeIds));
   }, [shoppingList, shoppingListRecipeIds]);
-
-  useEffect(() => {
-    localStorage.setItem('plateit_is_pro', String(isPro));
-  }, [isPro]);
 
   const handleAddButtonClick = () => {
     if (!isPro && recipes.length >= RECIPE_LIMIT) {
@@ -184,7 +195,7 @@ const App: React.FC = () => {
              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                <button 
                 onClick={handleAddButtonClick}
-                className="bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-all"
+                className="bg-red-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-red-700 transition-all"
                >
                  Add your first recipe
                </button>
@@ -246,10 +257,10 @@ const App: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveView('DASHBOARD')}>
-              <div className="bg-emerald-600 p-2 rounded-lg">
+              <div className="bg-red-600 p-2 rounded-lg">
                 <ChefHat className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-700 to-teal-500">
+              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-700 to-rose-500">
                 PlateIt
               </span>
               {isPro && (
@@ -263,7 +274,7 @@ const App: React.FC = () => {
               <button 
                 onClick={() => setActiveView('DASHBOARD')}
                 className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                  activeView === 'DASHBOARD' ? 'text-emerald-700' : 'text-slate-500 hover:text-slate-800'
+                  activeView === 'DASHBOARD' ? 'text-red-700' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
                 <BookOpen className="w-4 h-4" />
@@ -273,13 +284,13 @@ const App: React.FC = () => {
               <button 
                 onClick={() => setActiveView('SHOPPING_LIST')}
                 className={`relative flex items-center gap-2 text-sm font-medium transition-colors ${
-                  activeView === 'SHOPPING_LIST' ? 'text-emerald-700' : 'text-slate-500 hover:text-slate-800'
+                  activeView === 'SHOPPING_LIST' ? 'text-red-700' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
                 <ShoppingBasket className="w-4 h-4" />
                 <span className="hidden sm:inline">Shopping List</span>
                 {shoppingList.length > 0 && (
-                   <span className="absolute -top-1 -right-2 bg-emerald-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                   <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
                      {shoppingList.filter(i => !i.checked).length}
                    </span>
                 )}

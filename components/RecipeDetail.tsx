@@ -45,7 +45,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onBack }) =>
                   href={recipe.sourceUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 bg-emerald-600/90 hover:bg-emerald-500 backdrop-blur-md px-3 py-1.5 rounded-full transition-colors"
+                  className="flex items-center gap-2 bg-red-600/90 hover:bg-red-500 backdrop-blur-md px-3 py-1.5 rounded-full transition-colors"
                 >
                   <ExternalLink className="w-4 h-4" />
                   Source
@@ -58,9 +58,9 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onBack }) =>
         <div className="p-8 grid md:grid-cols-[1fr,1.5fr] gap-12">
           {/* Ingredients Column */}
           <div className="space-y-6">
-            <div className="flex items-center gap-3 text-emerald-800 mb-4">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <ChefHat className="w-5 h-5 text-emerald-600" />
+            <div className="flex items-center gap-3 text-red-800 mb-4">
+              <div className="p-2 bg-red-100 rounded-lg">
+                <ChefHat className="w-5 h-5 text-red-600" />
               </div>
               <h2 className="text-xl font-bold">Ingredients</h2>
             </div>
@@ -68,7 +68,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onBack }) =>
             <ul className="space-y-4">
               {recipe.ingredients.map((ing, idx) => (
                 <li key={idx} className="flex items-start gap-3 text-slate-700 pb-3 border-b border-slate-50 last:border-0">
-                  <span className="w-1.5 h-1.5 mt-2 bg-emerald-400 rounded-full flex-shrink-0" />
+                  <span className="w-1.5 h-1.5 mt-2 bg-red-400 rounded-full flex-shrink-0" />
                   <div>
                     <span className="font-semibold text-slate-900">{ing.amount}</span>
                     <span className="mx-1"></span>
@@ -92,9 +92,9 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onBack }) =>
 
           {/* Instructions Column */}
           <div>
-             <div className="flex items-center gap-3 text-emerald-800 mb-6">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <ChefHat className="w-5 h-5 text-emerald-600" />
+             <div className="flex items-center gap-3 text-red-800 mb-6">
+              <div className="p-2 bg-red-100 rounded-lg">
+                <ChefHat className="w-5 h-5 text-red-600" />
               </div>
               <h2 className="text-xl font-bold">Instructions</h2>
             </div>
@@ -102,7 +102,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onBack }) =>
             <div className="space-y-8">
               {recipe.instructions.map((step, idx) => (
                 <div key={idx} className="group flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 font-bold group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                  <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 font-bold group-hover:bg-red-500 group-hover:text-white transition-colors">
                     {step.step}
                   </div>
                   <p className="text-slate-600 leading-relaxed pt-1">

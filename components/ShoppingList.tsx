@@ -75,7 +75,7 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
       {/* Progress Bar */}
       <div className="h-1.5 w-full bg-slate-100 rounded-full mb-8 overflow-hidden">
         <div 
-          className="h-full bg-emerald-500 transition-all duration-500 ease-out"
+          className="h-full bg-red-500 transition-all duration-500 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -87,8 +87,8 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
           
           return (
             <div key={category} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-              <h3 className="font-bold text-emerald-800 mb-4 flex items-center gap-2">
-                <span className="w-2 h-6 bg-emerald-500 rounded-full"></span>
+              <h3 className="font-bold text-red-800 mb-4 flex items-center gap-2">
+                <span className="w-2 h-6 bg-red-500 rounded-full"></span>
                 {category}
               </h3>
               <div className="space-y-3">
@@ -102,8 +102,8 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
                   >
                     <div className={`mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
                       item.checked 
-                        ? 'bg-emerald-500 border-emerald-500' 
-                        : 'border-slate-300 group-hover:border-emerald-400'
+                        ? 'bg-red-500 border-red-500' 
+                        : 'border-slate-300 group-hover:border-red-400'
                     }`}>
                       {item.checked && <Check className="w-3.5 h-3.5 text-white" />}
                     </div>

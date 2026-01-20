@@ -27,7 +27,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick, onAddTo
       
       <div className="p-5 flex-1 flex flex-col">
         <div className="flex-1 cursor-pointer" onClick={() => onClick(recipe)}>
-          <h3 className="font-bold text-lg text-slate-800 mb-2 line-clamp-2 leading-tight group-hover:text-emerald-700 transition-colors">
+          <h3 className="font-bold text-lg text-slate-800 mb-2 line-clamp-2 leading-tight group-hover:text-red-700 transition-colors">
             {recipe.title}
           </h3>
           <p className="text-slate-500 text-sm line-clamp-2 mb-4">
@@ -53,8 +53,8 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick, onAddTo
           }}
           className={`w-full py-2.5 rounded-lg text-sm font-medium transition-all duration-200 border ${
             isInShoppingList
-              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-              : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-500 hover:text-emerald-600'
+              ? 'bg-red-50 text-red-700 border-red-200'
+              : 'bg-white text-slate-600 border-slate-200 hover:border-red-500 hover:text-red-600'
           }`}
         >
           {isInShoppingList ? 'Added to List' : 'Add to Shopping List'}

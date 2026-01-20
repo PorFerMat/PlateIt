@@ -52,7 +52,7 @@ export const AddRecipeModal: React.FC<AddRecipeModalProps> = ({ isOpen, onClose,
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden animate-in zoom-in-95 duration-200">
         <div className="flex justify-between items-center p-6 border-b border-slate-100">
-          <div className="flex items-center gap-2 text-emerald-700">
+          <div className="flex items-center gap-2 text-red-700">
             <Sparkles className="w-5 h-5" />
             <h2 className="text-xl font-bold">Add New Recipe</h2>
           </div>
@@ -67,7 +67,7 @@ export const AddRecipeModal: React.FC<AddRecipeModalProps> = ({ isOpen, onClose,
               onClick={() => setMode('url')}
               className={`flex-1 py-3 px-4 rounded-xl border flex items-center justify-center gap-2 transition-all ${
                 mode === 'url' 
-                  ? 'border-emerald-500 bg-emerald-50 text-emerald-700 font-medium' 
+                  ? 'border-red-500 bg-red-50 text-red-700 font-medium' 
                   : 'border-slate-200 text-slate-600 hover:border-slate-300'
               }`}
             >
@@ -78,7 +78,7 @@ export const AddRecipeModal: React.FC<AddRecipeModalProps> = ({ isOpen, onClose,
               onClick={() => setMode('text')}
               className={`flex-1 py-3 px-4 rounded-xl border flex items-center justify-center gap-2 transition-all ${
                 mode === 'text' 
-                  ? 'border-emerald-500 bg-emerald-50 text-emerald-700 font-medium' 
+                  ? 'border-red-500 bg-red-50 text-red-700 font-medium' 
                   : 'border-slate-200 text-slate-600 hover:border-slate-300'
               }`}
             >
@@ -96,7 +96,7 @@ export const AddRecipeModal: React.FC<AddRecipeModalProps> = ({ isOpen, onClose,
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={mode === 'url' ? "https://..." : "Ingredients:\n...\nInstructions:\n..."}
-                className="w-full h-32 p-4 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none resize-none transition-all"
+                className="w-full h-32 p-4 rounded-xl border border-slate-200 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none resize-none transition-all"
                 disabled={isLoading}
               />
             </div>
@@ -119,7 +119,7 @@ export const AddRecipeModal: React.FC<AddRecipeModalProps> = ({ isOpen, onClose,
               <button
                 type="submit"
                 disabled={isLoading || !input.trim()}
-                className="px-6 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow-lg shadow-emerald-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all"
+                className="px-6 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all"
               >
                 {isLoading ? (
                   <>

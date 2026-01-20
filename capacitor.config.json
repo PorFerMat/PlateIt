@@ -1,0 +1,14 @@
+{
+  "appId": "com.plateit.app",
+  "appName": "PlateIt",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "Purchases": {
+      "iosApiKey": "appl_api_key_placeholder",
+      "androidApiKey": "goog_api_key_placeholder"
+    }
+  }
+}

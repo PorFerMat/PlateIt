@@ -1,17 +1,19 @@
-# PlateIt - Requirement Specification & User Manual
+# PlateIt - Smart Culinary Assistant
 
 ## 📋 App Requirements Specification
 
 ### 1. Platform Requirements
 *   **Target Environments**: iOS (TestFlight) & Android (Google Play).
-*   **Architecture**: Built as a responsive React PWA. To reach native stores, this codebase is designed to be bundled with **Capacitor**.
+*   **Architecture**: Built as a responsive React PWA. The codebase includes `capacitor.config.json` to allow easy bundling into native binaries using **Capacitor**.
 *   **Offline Support**: Local storage caching enabled for recipes and shopping lists.
 
 ### 2. Monetization (RevenueCat)
-*   **SDK Integration**: The app features a `SubscriptionModal` that mocks the RevenueCat transaction flow.
+*   **SDK Integration**: The app includes a dedicated `services/revenueCat.ts` layer.
+    *   **Abstraction**: This service provides a unified interface for subscription management (`Purchases.getOfferings`, `Purchases.purchasePackage`).
+    *   **Native vs Web**: On native devices (detected via Capacitor), it is structured to call the underlying `@revenuecat/purchases-capacitor` plugin. On web, it falls back to a mock implementation for testing.
 *   **Subscription Tier**: "PlateIt Pro" ($4.99/mo).
 *   **Gating Logic**: Free users are limited to **3 recipes**. Attempting to add a 4th triggers the Pro unlock flow.
-*   **Pro Features**: Unlimited recipe storage, priority AI processing, and ad-free experience.
+*   **Entitlements**: App checks for `pro_access` entitlement on launch.
 
 ### 3. Core Functionality
 *   **AI Extraction**: Powered by Gemini-3-Flash. Supports parsing raw text (copy-pasted) or URLs (web scraping via Google Search tool).
@@ -52,4 +54,9 @@ PlateIt is designed for the modern home cook who finds inspiration on social med
 *   **API Configuration**: Ensure `process.env.API_KEY` is set with a valid Google Gemini API Key.
 *   **Framework**: React 19 + TypeScript.
 *   **Styling**: Tailwind CSS for responsive utility-first design.
-*   **Build**: `npm run build` for production-ready assets.
+*   **Mobile Build**:
+    1.  Ensure Capacitor CLI is installed (`npm install @capacitor/cli @capacitor/core`).
+    2.  Add platforms: `npx cap add ios`, `npx cap add android`.
+    3.  Build web assets: `npm run build`.
+    4.  Sync: `npx cap sync`.
+    5.  Open native IDE: `npx cap open ios` or `npx cap open android`.
