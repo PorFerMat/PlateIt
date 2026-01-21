@@ -2,19 +2,41 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PlateIt - Plan, Shop, Cook</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>PlateIt</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      
+      /* Reset for Native App Feel */
+      * {
+        -webkit-tap-highlight-color: transparent;
+        box-sizing: border-box;
+      }
+      
       body {
         font-family: 'Inter', sans-serif;
         background-color: #f8fafc;
+        /* Prevent bounce scrolling on the body, usually handled by native view, but good for safety */
+        overscroll-behavior-y: none;
+        /* Disable text selection generally to feel like an app UI */
+        -webkit-user-select: none;
+        user-select: none;
+        /* Handle safe areas for notched phones */
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
       }
-      /* Custom Scrollbar */
+
+      /* Re-enable text selection for inputs and textareas */
+      input, textarea, [contenteditable="true"] {
+        -webkit-user-select: text;
+        user-select: text;
+      }
+
+      /* Custom Scrollbar - thin and subtle */
       ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 4px;
+        height: 4px;
       }
       ::-webkit-scrollbar-track {
         background: transparent; 
@@ -22,9 +44,6 @@
       ::-webkit-scrollbar-thumb {
         background: #cbd5e1; 
         border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8; 
       }
     </style>
   <script type="importmap">
